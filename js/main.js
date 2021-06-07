@@ -4,9 +4,8 @@ const randomNumber = (minValue, maxValue) => {
     minValue = Math.ceil(minValue);
     maxValue = Math.floor(maxValue);
     return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
-  } else {
-    return ('Диапазон может быть только положительный, включая ноль.');
   }
+  return ('Диапазон может быть только положительный, включая ноль.');
 };
 randomNumber();
 
@@ -15,8 +14,7 @@ randomNumber();
 const geographicalCoordinates = (latitude, longitude, toFloat) => {
   if (latitude >= 0 && longitude >= 0 && latitude < longitude) {
     return ((Math.random() * (longitude - latitude + 1)) + latitude).toFixed(toFloat);
-  } else {
-    return ('Данные некорректны, перечитайте задание.');
   }
+  return ('Данные некорректны, перечитайте задание.');
 };
 geographicalCoordinates();
