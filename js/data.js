@@ -30,7 +30,7 @@ const MAX_LONGITUDE = 139.8000;
 const LAT = getGeographicalCoordinates(MIN_LATITUDE, MAX_LATITUDE, 4);
 const LNG = getGeographicalCoordinates(MIN_LONGITUDE, MAX_LONGITUDE, 4);
 
-const createAnAdvertisement = {
+const createAnAdvertisement = () => ({
   'author': {
     avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`,
   },
@@ -51,8 +51,8 @@ const createAnAdvertisement = {
     'lat': `${LAT}`,
     'lng': `${LNG}`,
   },
-};
+});
 
-const getGenerateAnArray = new Array(5).fill().map(() => createAnAdvertisement);
+const getGenerateAnArray = new Array(5).fill().map(() => createAnAdvertisement());
 
-console.log(getGenerateAnArray);
+export {getGenerateAnArray};

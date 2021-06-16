@@ -14,5 +14,4 @@ const getGeographicalCoordinates = (latitude, longitude, toFloat) => {
 
 const getRandomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
 
-
 export {getRandomNumber, getGeographicalCoordinates, getRandomArrayElement};
