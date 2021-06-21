@@ -55,4 +55,4 @@ const createAnAdvertisement = () => ({
 
 const getGenerateAnArray = new Array(5).fill().map(() => createAnAdvertisement());
 
-export {getGenerateAnArray};
+export {createAnAdvertisement, getGenerateAnArray};
