@@ -36,7 +36,7 @@ const createAnAdvertisement = () => ({
   },
   'offer': {
     'title': getRandomArrayElement(titles),
-    'adress': `location.x = ${LAT}, location.y = ${LNG}`,
+    'adress': `${LAT}, ${LNG}`,
     'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
     'type': getRandomArrayElement(type),
     'rooms': getRandomNumber(MIN_NUMBERS_OF_ROOMS, MAX_NUMBERS_OF_ROOMS),
