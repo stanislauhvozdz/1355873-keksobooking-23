@@ -5,7 +5,6 @@ import {createAnAdvertisement} from './data.js';
 const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
-const featureListElement = templateCard.querySelector('.popup__features');
 
 const createCard = (data) => {
   const clone = templateCard.cloneNode(true);
@@ -59,18 +58,15 @@ const createCard = (data) => {
     clone.querySelector('.popup__text--time').style = 'display: none';
   }
 
-  // FEATUREs
   const features = data.offer.features;
-  const modifiers = features.map((feature) => `popup__feature--${feature}`);
-
-  featureListElement.querySelectorAll('.popup__feature').forEach((item) => {
+  const modifuers = features.map((feature) => `popup__feature--${feature}`);
+  clone.querySelectorAll('.popup__feature').forEach((item) => {
     const modifier = item.classList[1];
-    if (!modifiers.includes(modifier)) {
+    if (!modifuers.includes(modifier)) {
       item.remove();
     }
   });
 
-  // clone.querySelector('.popup__features').textContent = ;
   if (data.offer.description) {
     clone.querySelector('.popup__description').textContent = data.offer.description;
   } else {
