@@ -1,5 +1,6 @@
 import {getGeographicalCoordinates} from './util.js';
 import {getRandomNumber} from './util.js';
+import {getRandomArray} from './util.js';
 import {getRandomArrayElement} from './util.js';
 
 //  Все переменные - константы
@@ -36,16 +37,16 @@ const createAnAdvertisement = () => ({
   },
   'offer': {
     'title': getRandomArrayElement(titles),
-    'adress': `location.x = ${LAT}, location.y = ${LNG}`,
+    'adress': `${LAT}, ${LNG}`,
     'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
-    'type': getRandomArrayElement(type),
+    'type': getRandomArray(type),
     'rooms': getRandomNumber(MIN_NUMBERS_OF_ROOMS, MAX_NUMBERS_OF_ROOMS),
     'guests': getRandomNumber(MIN_NUMBER_OF_GUESTS, MAX_NUMBER_OF_GUESTS),
     'checkin':getRandomArrayElement(TIMES.checkin),
     'checkout':getRandomArrayElement(TIMES.checkout),
-    'features': getRandomArrayElement(features),
-    'description': getRandomArrayElement(description),
-    'photo': getRandomArrayElement(photo),
+    'features': getRandomArray(features),
+    'description': getRandomArray(description),
+    'photo': getRandomArray(photo),
   },
   'location': {
     'lat': `${LAT}`,
@@ -55,4 +56,4 @@ const createAnAdvertisement = () => ({
 
 const getGenerateAnArray = new Array(5).fill().map(() => createAnAdvertisement());
 
-export {getGenerateAnArray};
+export {createAnAdvertisement, getGenerateAnArray};
