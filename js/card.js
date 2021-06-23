@@ -9,6 +9,11 @@ const featureListElement = templateCard.querySelector('.popup__features');
 
 const createCard = (data) => {
   const clone = templateCard.cloneNode(true);
+  if (data.author.avatar) {
+    clone.querySelector('.popup__avatar').src = data.author.avatar;
+  } else {
+    clone.querySelector('.popup__avatar').style = 'display: none';
+  }
 
   if (data.offer.title) {
     clone.querySelector('.popup__title').textContent = data.offer.title;
@@ -55,25 +60,37 @@ const createCard = (data) => {
   }
 
   // FEATUREs
-  const features = `popup__feature--${data.offer.features}`;
+  const features = data.offer.features;
+  const modifiers = features.map((feature) => `popup__feature--${feature}`);
+
   featureListElement.querySelectorAll('.popup__feature').forEach((item) => {
     const modifier = item.classList[1];
-    if (!features.includes(modifier)) {
+    if (!modifiers.includes(modifier)) {
       item.remove();
     }
   });
 
-
+  // clone.querySelector('.popup__features').textContent = ;
   if (data.offer.description) {
     clone.querySelector('.popup__description').textContent = data.offer.description;
   } else {
     clone.querySelector('.popup__description').style = 'display: none';
   }
 
-  clone.querySelector('.popup__description').textContent = data.offer.description;
   const popupPhotos = clone.querySelector('.popup__photos');
   const popupPhoto = popupPhotos.querySelector('.popup__photo');
-  popupPhoto.src = data.offer.photo;
+
+  const photos = data.offer.photo;
+  const getCardPhotos = function (photoArray) {
+    photoArray.forEach((item) => {
+      const newImg = popupPhoto.cloneNode(true);
+      newImg.src = item;
+      popupPhotos.append(newImg);
+    });
+    const photoCollection = popupPhotos.querySelectorAll('.popup__photo');
+    photoCollection[0].remove();
+  };
+  getCardPhotos(photos);
 
   mapCanvas.appendChild(clone);
 };
