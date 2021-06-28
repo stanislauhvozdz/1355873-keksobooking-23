@@ -1,3 +1,9 @@
+const adForm = document.querySelector('.ad-form');
+const inputPrice = adForm.querySelector('#price');
+const roomsInputElement = adForm.querySelector('#room_number');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+
 const pricePerNight = {
   bungalow: 0,
   flat: 1000,
@@ -5,66 +11,101 @@ const pricePerNight = {
   house: 5000,
   palace: 10000,
 };
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-const adForm = document.querySelector('.ad-form');
-const inputTitle = adForm.querySelector('#title');
-const inputPrice = adForm.querySelector('#price');
-const inputRoomNumber = adForm.querySelector('#room_number');
-const rooms = inputRoomNumber.querySelectorAll('option');
-const inputGuests = adForm.querySelector('#capacity');
-const guests = inputGuests.querySelectorAll('option');
 
-inputTitle.addEventListener('invalid', () => {
-  if (inputTitle.validity.tooShort) {
-    inputTitle.setCustomValidity('Сообщение должно состоять минимум из 30 символов');
-  } else if (inputTitle.validity.tooLong) {
-    inputTitle.setCustomValidity('Имя не должно превышать 100 символов');
-  } else if (inputTitle.validity.valueMissing) {
-    inputTitle.setCustomValidity('Обязательное поле');
-  } else {
-    inputTitle.setCustomValidity('');
-  }
-});
+const housingType = adForm.querySelector('#type');
+const housingPrice = adForm.querySelector('#price');
 
-inputTitle.addEventListener('input', () => {
-  const valueLength = inputTitle.value.length;
-
-  if (valueLength < MIN_TITLE_LENGTH) {
-    inputTitle.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
-  } else if (valueLength > MAX_TITLE_LENGTH) {
-    inputTitle.setCustomValidity(`Удалите лишние ${  valueLength - MAX_TITLE_LENGTH } симв.`);
-  } else {
-    inputTitle.setCustomValidity('');
-  }
-
-  inputTitle.reportValidity();
-});
 
 inputPrice.addEventListener('input', () => {
   if (inputPrice.value === '') {
     inputPrice.value === 0;
-  } if (inputPrice.value.length > 7) {
-    inputPrice.value === '1000000';
+  }
+  if (inputPrice.value.length > 7) {
+    inputPrice.value === 1000000;
   }
 });
 
-inputRoomNumber.addEventListener('input', () => {
-  for (const guest of guests) {
-    if (inputRoomNumber.value + 1 <= guest.dataset.sence) {
-      guest.setAttribute('disabled', true);
-    } else {
-      guest.removeAttribute('disabled', true);
-    }
+const setDisabledValue = (elements, values) => {
+  for (let item = 0; item < elements.length; item++) {
+    elements[item].disabled = values.indexOf(elements[item].value) > -1;
+  }
+};
+
+const calculateRoomsAndCapacity = () => {
+  const capacityInputSelect = adForm.querySelector('select[name="capacity"]');
+  const capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
+  const roomsInputValue = roomsInputElement.value;
+
+  switch (roomsInputValue) {
+    case '1':
+      setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
+      capacityOptionOptions[0].selected = true;
+      break;
+    case '2':
+      setDisabledValue(capacityOptionOptions, ['0', '3']);
+      capacityOptionOptions[1].selected = true;
+      break;
+    case '3':
+      setDisabledValue(capacityOptionOptions, ['0']);
+      capacityOptionOptions[2].selected = true;
+      break;
+    case '100':
+      setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
+      capacityOptionOptions[3].selected = true;
+      break;
+  }
+};
+
+const roomsInputChangeHandler = () => {
+  calculateRoomsAndCapacity();
+};
+
+roomsInputElement.addEventListener('change', roomsInputChangeHandler);
+
+housingType.addEventListener('change', () => {
+  switch(housingType.value) {
+    case 'bungalow':
+      housingPrice.placeholder = pricePerNight.bungalow;
+      break;
+    case 'flat':
+      housingPrice.placeholder = pricePerNight.flat;
+      break;
+    case 'hotel':
+      housingPrice.placeholder = pricePerNight.hotel;
+      break;
+    case 'house':
+      housingPrice.placeholder = pricePerNight.house;
+      break;
+    case 'palace':
+      housingPrice.placeholder = pricePerNight.palace;
+      break;
+    default:
+      housingPrice.placeholder = '0';
+      break;
   }
 });
 
-inputGuests.addEventListener('input', () => {
-  for (const room of rooms) {
-    if (inputGuests.value > room.dataset.sence) {
-      room.setAttribute('disabled', true);
-    } else {
-      room.removeAttribute('disabled', true);
-    }
+housingType.addEventListener('input', () => {
+  if (housingType.value === 'bungalow') {
+    housingPrice.setAttribute('min', '0');
+  } else if (housingType.value === 'flat') {
+    housingPrice.setAttribute('min', '1000');
+  } else if (housingType.value === 'hotel') {
+    housingPrice.setAttribute('min', '3000');
+  } else if (housingType.value === 'house') {
+    housingPrice.setAttribute('min', '5000');
+  } else if (housingType.value === 'palace') {
+    housingPrice.setAttribute('min', '10000');
+  } else {
+    housingPrice.setAttribute('min', '0');
   }
 });
+
+
+const onTimeChange = function (evt) {
+  const select = evt.target === timeIn ? timeOut : timeIn;
+  select.value = evt.target.value;
+};
+
+timeIn.addEventListener('change', onTimeChange);
+timeOut.addEventListener('change', onTimeChange);
