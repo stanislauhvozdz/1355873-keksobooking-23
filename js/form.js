@@ -14,3 +14,5 @@ const getIncludedForm = () => {
   [...adForm.items].forEach((item) => item.removeAttribute('disabled'));
   [...mapFilter.items].forEach((item) => item.removeAttribute('disabled'));
 };
+
+export {getDisabledForm, getIncludedForm};
