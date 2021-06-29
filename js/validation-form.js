@@ -101,7 +101,6 @@ housingType.addEventListener('input', () => {
   }
 });
 
-
 const onTimeChange = function (evt) {
   const select = evt.target === timeIn ? timeOut : timeIn;
   select.value = evt.target.value;
