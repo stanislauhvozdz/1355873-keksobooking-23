@@ -1,8 +1,5 @@
 import {createAnAdvertisement} from './data.js';
 
-// console.log(createAnAdvertisement());
-
-const mapCanvas = document.querySelector('.map__canvas');
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
 
@@ -87,7 +84,7 @@ const createCard = (data) => {
     photoCollection[0].remove();
   };
   getCardPhotos(photos);
-
-  mapCanvas.appendChild(clone);
 };
 createCard(createAnAdvertisement());
+
+export {createCard};
