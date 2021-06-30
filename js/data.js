@@ -28,16 +28,13 @@ const MAX_LATITUDE = 35.7000;
 const MIN_LONGITUDE = 139.7500;
 const MAX_LONGITUDE = 139.8000;
 
-const LAT = getGeographicalCoordinates(MIN_LATITUDE, MAX_LATITUDE, 4);
-const LNG = getGeographicalCoordinates(MIN_LONGITUDE, MAX_LONGITUDE, 4);
-
 const createAnAdvertisement = () => ({
   'author': {
     avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`,
   },
   'offer': {
     'title': getRandomArrayElement(titles),
-    'adress': `${LAT}, ${LNG}`,
+    'address': `${getGeographicalCoordinates(MIN_LONGITUDE, MAX_LONGITUDE, 4)}, ${getGeographicalCoordinates(MIN_LONGITUDE, MAX_LONGITUDE, 4)}`,
     'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
     'type': getRandomArray(type),
     'rooms': getRandomNumber(MIN_NUMBERS_OF_ROOMS, MAX_NUMBERS_OF_ROOMS),
@@ -49,8 +46,8 @@ const createAnAdvertisement = () => ({
     'photo': getRandomArray(photo),
   },
   'location': {
-    'lat': `${LAT}`,
-    'lng': `${LNG}`,
+    'lat': getGeographicalCoordinates(MIN_LATITUDE, MAX_LATITUDE, 4),
+    'lng': getGeographicalCoordinates(MIN_LONGITUDE, MAX_LONGITUDE, 4),
   },
 });
 

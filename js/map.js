@@ -100,6 +100,7 @@ const createMarkersGroup = (similarAds) => {
     createMarker(currentAdvertising);
   });
 };
+
 createMarkersGroup(getGenerateAnArray);
 
 export {activationMap};
