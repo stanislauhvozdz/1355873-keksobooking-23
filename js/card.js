@@ -1,5 +1,3 @@
-import {createAnAdvertisement} from './data.js';
-
 const cardTemplateFragment = document.querySelector('#card').content;
 const templateCard = cardTemplateFragment.querySelector('.popup');
 
@@ -84,7 +82,8 @@ const createCard = (data) => {
     photoCollection[0].remove();
   };
   getCardPhotos(photos);
+
+  return clone;
 };
-createCard(createAnAdvertisement());
 
 export {createCard};

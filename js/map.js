@@ -1,11 +1,11 @@
 import {getIncludedForm} from './form.js';
-// import {createCard} from './card.js';
-// import {createAnAdvertisement} from './data.js';
+import {createCard} from './card.js';
+import {getGenerateAnArray} from './data.js';
 
 const settingsMap = {
   DEFAULT_COORDS: {
-    lat: 35.689,
-    lng: 139.692,
+    lat: 35.68911,
+    lng: 139.69211,
   },
 };
 
@@ -34,21 +34,16 @@ L.tileLayer(
 
 
 const mainPinIcon = L.icon ({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
-const secondPinIcon = L.icon ({
-  iconUrl: '../img/pin.svg',
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-});
 
 const mainMarker = L.marker (
   {
-    lat: 35.689,
-    lng: 139.692,
+    lat: 35.68911,
+    lng: 139.69211,
   },
   {
     draggable: true,
@@ -59,6 +54,7 @@ mainMarker.addTo(map);
 
 const adForm = document.querySelector('.ad-form');
 const inputAddress = adForm.querySelector('#address');
+inputAddress.setAttribute('placeholder', `${settingsMap.DEFAULT_COORDS.lat}, ${settingsMap.DEFAULT_COORDS.lat}`);
 const getAddress = ({lat, lng}) => {
   inputAddress.value = `${Number(lat.toFixed(5))}, ${Number(lng.toFixed(5))}`;
 };
@@ -67,20 +63,43 @@ mainMarker.on('dragend', (evt) => {
   getAddress(evt.target.getLatLng());
 });
 
-const secondMarker = L.marker (
-  {
-    lat: 35.691,
-    lng: 139.695,
-  },
-  {
-    draggable: true,
-    icon: secondPinIcon,
-  },
-);
 
-secondMarker.bindPopup(price, {
-  keepInView: true,
-});
-secondMarker.addTo(map);
+const markerGroup = L.layerGroup().addTo(map);
+
+const createMarker = (currentAdvertising) => {
+  const {lat, lng} = currentAdvertising.location;
+
+  const icon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon,
+    },
+  );
+
+  marker
+    .addTo(markerGroup)
+    .bindPopup(
+      createCard(currentAdvertising),
+      {
+        keepInView: true,
+      },
+    );
+};
+
+const createMarkersGroup = (similarAds) => {
+  similarAds.forEach((currentAdvertising) => {
+    createMarker(currentAdvertising);
+  });
+};
+createMarkersGroup(getGenerateAnArray);
 
 export {activationMap};
