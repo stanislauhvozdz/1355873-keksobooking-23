@@ -54,13 +54,17 @@ const createCard = (data) => {
   }
 
   const features = data.offer.features;
-  const modifuers = features.map((feature) => `popup__feature--${feature}`);
-  clone.querySelectorAll('.popup__feature').forEach((item) => {
-    const modifier = item.classList[1];
-    if (!modifuers.includes(modifier)) {
-      item.remove();
-    }
-  });
+  if (features) {
+    const modifuers = features.map((feature) => `popup__feature--${feature}`);
+    clone.querySelectorAll('.popup__feature').forEach((item) => {
+      const modifier = item.classList[1];
+      if (!modifuers.includes(modifier)) {
+        item.remove();
+      }
+    });
+  } else {
+    clone.querySelectorAll('.popup__feature').style = 'display: none';
+  }
 
   if (data.offer.description) {
     clone.querySelector('.popup__description').textContent = data.offer.description;
@@ -71,17 +75,21 @@ const createCard = (data) => {
   const popupPhotos = clone.querySelector('.popup__photos');
   const popupPhoto = popupPhotos.querySelector('.popup__photo');
 
-  const photos = data.offer.photo;
-  const getCardPhotos = function (photoArray) {
-    photoArray.forEach((item) => {
-      const newImg = popupPhoto.cloneNode(true);
-      newImg.src = item;
-      popupPhotos.append(newImg);
-    });
-    const photoCollection = popupPhotos.querySelectorAll('.popup__photo');
-    photoCollection[0].remove();
-  };
-  getCardPhotos(photos);
+  const photos = data.offer.photos;
+  if (photos) {
+    const getCardPhotos = function (photoArray) {
+      photoArray.forEach((item) => {
+        const newImg = popupPhoto.cloneNode(true);
+        newImg.src = item;
+        popupPhotos.append(newImg);
+      });
+      const photoCollection = popupPhotos.querySelectorAll('.popup__photo');
+      photoCollection[0].remove();
+    };
+    getCardPhotos(photos);
+  } else {
+    popupPhotos.querySelectorAll('.popup__photo').style = 'display: none';
+  }
 
   return clone;
 };

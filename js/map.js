@@ -1,6 +1,6 @@
 import {getIncludedForm} from './form.js';
 import {createCard} from './card.js';
-import {getGenerateAnArray} from './data.js';
+
 
 const settingsMap = {
   DEFAULT_COORDS: {
@@ -101,6 +101,19 @@ const createMarkersGroup = (similarAds) => {
   });
 };
 
-createMarkersGroup(getGenerateAnArray);
 
-export {activationMap};
+const resetMap = () => {
+  map.setView(
+    {
+      lat: settingsMap.DEFAULT_COORDS.lat,
+      lng: settingsMap.DEFAULT_COORDS.lng,
+    }, 15);
+  mainMarker.setLatLng(
+    [settingsMap.DEFAULT_COORDS.lat,
+      settingsMap.DEFAULT_COORDS.lng,
+    ]);
+  getAddress(settingsMap.DEFAULT_COORDS);
+};
+
+
+export {activationMap, resetMap, createMarkersGroup};
