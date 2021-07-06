@@ -30,4 +30,4 @@ function getRandomArray(features) {
   return array;
 }
 
-export {getRandomNumber, getGeographicalCoordinates, getRandomArray, getRandomArrayElement, debounce};
+export {getRandomNumber, getGeographicalCoordinates, getRandomArray, getRandomArrayElement};
