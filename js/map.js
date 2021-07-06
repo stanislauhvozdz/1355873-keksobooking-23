@@ -112,7 +112,6 @@ const resetMap = () => {
     [settingsMap.DEFAULT_COORDS.lat,
       settingsMap.DEFAULT_COORDS.lng,
     ]);
-  getAddress(settingsMap.DEFAULT_COORDS);
 };
 
 

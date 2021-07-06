@@ -128,35 +128,11 @@ resetFormButton.addEventListener('click', (evt) => {
   resetMap();
 });
 
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
 
-// хочу сделать отправку формы
-const setUserFormSubmit = (onSuccess) => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const sendData = (onSuccess, onFail, body) => {
-      fetch(
-        'https://23.javascript.pages.academy/code-and-magick',
-        {
-          method: 'POST',
-          body,
-        },
-      )
-        .then((response) => {
-          if (response.ok) {
-            onSuccess();
-            renderSuccessMessage();
-          } else {
-            onFail();
-            renderErrorMessage;
-          }
-        })
-        .catch(() => {
-          onFail();
-          renderErrorMessage;
-        });
-    };
-  });
-};
+  sendData(renderSuccessMessage, renderErrorMessage, formData);
+});
 
 export {resetForms};
