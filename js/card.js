@@ -88,7 +88,7 @@ const createCard = (data) => {
     };
     getCardPhotos(photos);
   } else {
-    popupPhotos.querySelectorAll('.popup__photo').style = 'display: none';
+    popupPhotos.classList.add('hidden');
   }
 
   return clone;

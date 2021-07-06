@@ -96,6 +96,7 @@ const createMarker = (currentAdvertising) => {
 };
 
 const createMarkersGroup = (similarAds) => {
+  markerGroup.clearLayers();
   similarAds.forEach((currentAdvertising) => {
     createMarker(currentAdvertising);
   });

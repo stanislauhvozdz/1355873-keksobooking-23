@@ -2,6 +2,7 @@ import './card.js';
 import './form.js';
 import './validation-form.js';
 import './render-message.js';
+import './filter.js';
 import {getData} from './api.js';
 import {createMarkersGroup} from './map.js';
 
