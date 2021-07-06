@@ -1,8 +1,16 @@
+import {resetMap} from './map.js';
+import {sendData} from './api.js';
+import {renderSuccessMessage} from './render-message.js';
+import {renderErrorMessage} from './render-message.js';
+
 const adForm = document.querySelector('.ad-form');
+const filterForm = document.querySelector('.map__filters');
 const inputPrice = adForm.querySelector('#price');
 const roomsInputElement = adForm.querySelector('#room_number');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
+const resetFormButton = adForm.querySelector('.ad-form__reset');
+
 
 const pricePerNight = {
   bungalow: 0,
@@ -108,3 +116,23 @@ const onTimeChange = function (evt) {
 
 timeIn.addEventListener('change', onTimeChange);
 timeOut.addEventListener('change', onTimeChange);
+
+const resetForms = () => {
+  adForm.reset();
+  filterForm.reset();
+};
+
+resetFormButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForms();
+  resetMap();
+});
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+
+  sendData(renderSuccessMessage, renderErrorMessage, formData);
+});
+
+export {resetForms};
