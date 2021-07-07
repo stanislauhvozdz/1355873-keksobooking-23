@@ -1,3 +1,6 @@
+import {createMarkersGroup} from './map.js';
+import {removeMarkersGroup} from './map.js';
+
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -43,6 +46,7 @@ inputFilters.forEach((elem) => {
   });
 });
 
+
 const filterAdvertisement = (advertisement) => {
   const advertisementOffer = advertisement.offer;
   const advertisementFeatures = advertisementOffer.features;
@@ -79,3 +83,17 @@ const filterAdvertisement = (advertisement) => {
   return true;
 };
 
+
+const updateAdvertisement = () => {
+  const filteredAdvertisement = ARRAY.filter(filterAdvertisement); // подключить наш массив с сервера и профильтровать в ARRAY
+  removeMarkersGroup();
+  createMarkersGroup(filteredAdvertisement);
+};
+
+
+// МОЯ ЛОГИКА
+// 1. проргоняем весь массив через фильтер
+// 2. удаляем все маркеры что были отресованы первоначально
+// 3. добавляем новые маркеры по отфильтрованому массиву
+
+// вопрос, как занести правильно занести первоночальнй массив в функцию updateAdvertisement

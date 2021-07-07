@@ -115,5 +115,8 @@ const resetMap = () => {
     ]);
 };
 
+const removeMarkersGroup = () => {
+  map.remove(markerGroup);
+};
 
-export {activationMap, resetMap, createMarkersGroup};
+export {activationMap, resetMap, createMarkersGroup, removeMarkersGroup};
