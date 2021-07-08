@@ -1,5 +1,6 @@
-import {createMarkersGroup} from './map.js';
-import {removeMarkersGroup} from './map.js';
+// import {createMarkersGroup} from './map.js';
+// import {removeMarkersGroup} from './map.js';
+
 
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
@@ -52,48 +53,33 @@ const filterAdvertisement = (advertisement) => {
   const advertisementFeatures = advertisementOffer.features;
   const advertisementPrice = advertisementOffer.price;
 
-  for (const i = 0; i < selectFilters.length; i++) {
-    if (selectFilters[i] === filterType) {
-      if (selectFilters[i].value !== any && advertisementOffer.type !== selectFilters[i].value) {
+  for (let index = 0; index < selectFilters.length; index++) {
+    if (selectFilters[index] === filterType) {
+      if (selectFilters[index].value !== any && advertisementOffer.type !== selectFilters[index].value) {
         return false;
       }
     }
-    if (selectFilters[i] === filterPrice) {
-      if (selectFilters[i].value !== any &&
-        (selectFilters[i].value === low && advertisementPrice >= PRICE_RANGE.LOW.MAX
-        || selectFilters[i].value === middle && (advertisementPrice <= PRICE_RANGE.LOW.MAX || advertisementPrice >= PRICE_RANGE.MIDDLE.MAX)
-        || selectFilters[i].value === high && advertisementPrice <= PRICE_RANGE.MIDDLE.MAX)
+    if (selectFilters[index] === filterPrice) {
+      if (selectFilters[index].value !== any &&
+        (selectFilters[index].value === low && advertisementPrice >= PRICE_RANGE.LOW.MAX
+        || selectFilters[index].value === middle && (advertisementPrice <= PRICE_RANGE.LOW.MAX || advertisementPrice >= PRICE_RANGE.MIDDLE.MAX)
+        || selectFilters[index].value === high && advertisementPrice <= PRICE_RANGE.MIDDLE.MAX)
       ) {
         return false;
       }
     }
-    if (selectFilters[i] === filterRooms || selectFilters[i] === filterGuestsNumber) {
-      if (selectFilters[i].value !== any && advertisementOffer.guests !== selectFilters[i].value * 1) {
+    if (selectFilters[index] === filterRooms || selectFilters[index] === filterGuestsNumber) {
+      if (selectFilters[index].value !== any && advertisementOffer.guests !== selectFilters[index].value * 1) {
         return false;
       }
     }
   }
 
-  for (const j = 0; j < inputFilters.length; j++) {
+  for (let j = 0; j < inputFilters.length; j++) {
     if (inputFilters[j].checked === true && advertisementFeatures.indexOf(inputFilters[j].value) === -1) {
       return false;
     }
   }
-
-  return true;
 };
 
-
-const updateAdvertisement = () => {
-  const filteredAdvertisement = ARRAY.filter(filterAdvertisement); // подключить наш массив с сервера и профильтровать в ARRAY
-  removeMarkersGroup();
-  createMarkersGroup(filteredAdvertisement);
-};
-
-
-// МОЯ ЛОГИКА
-// 1. проргоняем весь массив через фильтер
-// 2. удаляем все маркеры что были отресованы первоначально
-// 3. добавляем новые маркеры по отфильтрованому массиву
-
-// вопрос, как занести правильно занести первоночальнй массив в функцию updateAdvertisement
+export {filterAdvertisement};

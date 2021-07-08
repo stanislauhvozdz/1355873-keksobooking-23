@@ -1,5 +1,7 @@
 import {resetForms} from './validation-form.js';
 import {resetMap} from './map.js';
+import {filterAdvertisement} from'./filter.js';
+const cachedData = [];
 
 const getData = (onSucces, onFail) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
@@ -7,12 +9,19 @@ const getData = (onSucces, onFail) => {
       if (response.ok) {
         return response.json();
       }
+      filterAdvertisement();
       throw new Error('Произошла непредвиденая проблема');
     })
-    .then(onSucces)
+    // .then(onSucces)
+    .then((dataArray) => {
+      dataArray.forEach((item) => {
+        cachedData.push(item);
+      });
+      return dataArray;
+    })
     .catch(onFail);
 };
-
+getData();
 
 const sendData = (onSucces, onFail, body) => {
   fetch('https://23.javascript.pages.academy/keksobooking',
@@ -33,4 +42,4 @@ const sendData = (onSucces, onFail, body) => {
 };
 
 
-export {getData, sendData};
+export {getData, sendData, cachedData};
