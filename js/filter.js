@@ -1,7 +1,3 @@
-// import {createMarkersGroup} from './map.js';
-// import {removeMarkersGroup} from './map.js';
-
-
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -10,76 +6,76 @@ function debounce (callback, timeoutDelay = 500) {
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 }
-
 const filterForm = document.querySelector('.map__filters');
-const filterType = filterForm.querySelector('#housing-type');
-const filterPrice = filterForm.querySelector('#housing-price');
-const filterRooms = filterForm.querySelector('#housing-rooms');
-const filterGuestsNumber = filterForm.querySelector('#housing-guests');
-const selectFilters = filterForm.querySelectorAll('.map__filter');
-const inputFilters = filterForm.querySelectorAll('[type="checkbox"]');
+const featuresInput = filterForm.querySelectorAll('[type="checkbox"]');
+const SIMILAR_ADS_QUANTITY = 10;
+const ANY_RANGE = 'any';
 const PRICE_RANGE = {
-  LOW: 10000,
-  MIDDLE: 50000,
-  HIGH: 999999,
+  LOW: {
+    MIN: 0,
+    MAX: 10000,
+  },
+  MIDDLE: {
+    MIN: 10000,
+    MAX: 50000,
+  },
+  HIGH: {
+    MIN: 50000,
+    MAX: Infinity,
+  },
 };
 
-const any = 'any';
-const low = 'low';
-const high = 'high';
-const middle = 'middle';
-
-
-const getCurrentFilterValue = (filter, value) => {
-  filter = value;
-  debounce();
+const FILTERS ={
+  TYPE: filterForm['housing-type'],
+  PRICE: filterForm['housing-price'],
+  ROOMS: filterForm['housing-rooms'],
+  GUESTS: filterForm['housing-guests'],
 };
 
-selectFilters.forEach((elem) => {
-  elem.addEventListener('change', (evt) => {
-    getCurrentFilterValue(elem.value, evt.target.value);
-  });
-});
-
-inputFilters.forEach((elem) => {
-  elem.addEventListener('change', () => {
-    getCurrentFilterValue(elem, elem.checked);
-  });
-});
-
-
-const filterAdvertisement = (advertisement) => {
-  const advertisementOffer = advertisement.offer;
-  const advertisementFeatures = advertisementOffer.features;
-  const advertisementPrice = advertisementOffer.price;
-
-  for (let index = 0; index < selectFilters.length; index++) {
-    if (selectFilters[index] === filterType) {
-      if (selectFilters[index].value !== any && advertisementOffer.type !== selectFilters[index].value) {
-        return false;
-      }
-    }
-    if (selectFilters[index] === filterPrice) {
-      if (selectFilters[index].value !== any &&
-        (selectFilters[index].value === low && advertisementPrice >= PRICE_RANGE.LOW.MAX
-        || selectFilters[index].value === middle && (advertisementPrice <= PRICE_RANGE.LOW.MAX || advertisementPrice >= PRICE_RANGE.MIDDLE.MAX)
-        || selectFilters[index].value === high && advertisementPrice <= PRICE_RANGE.MIDDLE.MAX)
-      ) {
-        return false;
-      }
-    }
-    if (selectFilters[index] === filterRooms || selectFilters[index] === filterGuestsNumber) {
-      if (selectFilters[index].value !== any && advertisementOffer.guests !== selectFilters[index].value * 1) {
-        return false;
-      }
-    }
-  }
-
-  for (let j = 0; j < inputFilters.length; j++) {
-    if (inputFilters[j].checked === true && advertisementFeatures.indexOf(inputFilters[j].value) === -1) {
-      return false;
-    }
-  }
+const featuresFilter = (adsArray) => {
+  const selectedFeatures = [...featuresInput].filter((input) => input.checked);
+  const filtered = adsArray.slice()
+    .filter((currentAd) =>
+      selectedFeatures.every((feature) =>
+        currentAd.offer.features && currentAd.offer.features.includes(feature.value)));
+  return filtered;
 };
 
-export {filterAdvertisement};
+const adFilter = (adsArray) => {
+  const filtersValue = {
+    type: FILTERS.TYPE.value,
+    price: FILTERS.PRICE.value.toUpperCase(),
+    rooms: Number(FILTERS.ROOMS.value) ||
+      FILTERS.ROOMS.value.toLowerCase(),
+    guests: Number(FILTERS.GUESTS.value) ||
+      FILTERS.GUESTS.value.toLowerCase(),
+  };
+  const filterKeys = Object.keys(filtersValue);
+  const filteredAds = adsArray.slice()
+    .filter((currentAd) => filterKeys.every((key) => {
+      if (key === 'price') {
+        if (Object.prototype.hasOwnProperty.call(PRICE_RANGE, filtersValue[key])) {
+          const min = PRICE_RANGE[filtersValue[key]].MIN;
+          const max = PRICE_RANGE[filtersValue[key]].MAX;
+          return (currentAd.offer[key] >= min && currentAd.offer[key] <= max);
+        }
+        return true;
+      }
+      return currentAd.offer[key] === filtersValue[key] || filtersValue[key] === ANY_RANGE;
+    }));
+  return filteredAds;
+};
+
+const mapFilter =(data) =>{
+  const similarAds = data.slice();
+  const filteredFeatures = featuresFilter(similarAds);
+  const filteredAds = adFilter(filteredFeatures)
+    .slice(0, SIMILAR_ADS_QUANTITY);
+  return filteredAds;
+};
+
+const setFilterFormChange = (cb) => {
+  filterForm.addEventListener('change', debounce(cb));
+};
+
+export {mapFilter, setFilterFormChange };

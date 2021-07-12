@@ -1,6 +1,9 @@
 import {getIncludedForm} from './form.js';
 import {createCard} from './card.js';
+import {mapFilter} from './filter.js'
 
+
+let allAdsData = [];
 
 const settingsMap = {
   DEFAULT_COORDS: {
@@ -97,11 +100,16 @@ const createMarker = (currentAdvertising) => {
 
 const createMarkersGroup = (similarAds) => {
   markerGroup.clearLayers();
-  similarAds.forEach((currentAdvertising) => {
-    createMarker(currentAdvertising);
+  const filteredAds = mapFilter(similarAds);
+  filteredAds.forEach((currentAd) => {
+    createMarker(currentAd);
   });
 };
 
+
+const saveAdsData = (adsList) =>{
+  allAdsData = adsList.slice();
+};
 
 const resetMap = () => {
   map.setView(
@@ -119,4 +127,4 @@ const removeMarkersGroup = () => {
   map.remove(markerGroup);
 };
 
-export {activationMap, resetMap, createMarkersGroup, removeMarkersGroup};
+export {activationMap, resetMap, createMarkersGroup, removeMarkersGroup, saveAdsData};

@@ -2,12 +2,19 @@ import './card.js';
 import './form.js';
 import './validation-form.js';
 import './render-message.js';
-import {filterAdvertisement} from'./filter.js';
-import {cachedData} from './api.js';
+import './filter.js';
+import {getData} from './api.js';
 import {createMarkersGroup} from './map.js';
+import {saveAdsData} from './map.js';
+import {setFilterFormChange} from './filter.js';
 
-const updateAdvertisement = () => {
-  const filteredAdvertisement = filterAdvertisement(cachedData);
-  createMarkersGroup(filteredAdvertisement.slice(0, 10));
+
+const getSimilarAds =() => {
+  getData((adsList) => {
+    saveAdsData(adsList);
+    createMarkersGroup(adsList);
+    setFilterFormChange(()=>createMarkersGroup(adsList));
+  });
 };
-updateAdvertisement();
+
+getSimilarAds();
