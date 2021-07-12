@@ -1,8 +1,5 @@
 import {resetForms} from './validation-form.js';
 import {resetMap} from './map.js';
-import {renderSuccessMessage} from './render-message.js';
-import {renderErrorMessage} from './render-message.js';
-
 
 const getData = (onSucces, onFail) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
@@ -28,10 +25,8 @@ const sendData = (onSucces, onFail, body) => {
         onSucces();
         resetForms();
         resetMap();
-        renderSuccessMessage();
       } else {
         onFail();
-        renderErrorMessage();
       }
     })
     .catch(onFail);
