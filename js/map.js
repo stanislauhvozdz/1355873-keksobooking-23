@@ -1,7 +1,6 @@
 import {getIncludedForm} from './form.js';
 import {createCard} from './card.js';
-import {mapFilter} from './filter.js'
-
+import {mapFilter} from './filter.js';
 
 let allAdsData = [];
 
@@ -127,4 +126,4 @@ const removeMarkersGroup = () => {
   map.remove(markerGroup);
 };
 
-export {activationMap, resetMap, createMarkersGroup, removeMarkersGroup, saveAdsData};
+export {activationMap, resetMap, createMarkersGroup, removeMarkersGroup, saveAdsData, allAdsData};
